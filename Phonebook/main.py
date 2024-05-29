@@ -2,6 +2,9 @@ import os
 
 menu = True
 
+phonebookName="phon.txt"
+
+
 def clear():
   os.system("cls")
 
@@ -20,13 +23,31 @@ def read_txt(filename):
         return phone_book
     except FileNotFoundError:
         return (f"Ошибка: Файл '{filename}' не найден.")
+    
+# Функция для вывода красивого справочника
+def print_data(data):
+    headers = ["№".ljust(3, ' '), "Фамилия".ljust(10, ' '), "Имя".ljust(10, ' '), "Телефон".ljust(13, ' '), "Описание".ljust(63, ' ')]
+    print("-" * 117) # Верхняя граница таблицы
+    print(f"| {' | '.join(headers)}   |")
+    print("-" * 117) # Разделитель под заголовками
+    for i, record in enumerate(data, 1):
+        values = [str(i).ljust(3, ' '), record['Фамилия'].ljust(10, ' '), record['Имя'].ljust(10, ' '), record['Телефон'].ljust(13, ' '), record['Описание'].strip().ljust(65, ' ')]
+        print(f"| {' | '.join(values)} |")
+    print("-" * 117) # Нижняя граница таблицы
+
+
         
-  
+# Сразу считываем справочник  
+bookInMemory=read_txt(phonebookName)
+
+
 # print(read_txt("phon1.txt"))
 
 # print(read_txt("phon.txt"))
 
 while menu:
+    draw()
+    print(f"Выбран справочник: {phonebookName} ")
     draw()
     print("┌─────────────────────────┐")
     print("│  Телефонный справочник  │")
@@ -45,7 +66,16 @@ while menu:
     
     
     if choice == "1": # 1. Открыть справочник
-      pass
+      clear()
+      menu=False
+      draw()
+      print_data(bookInMemory)
+      draw()
+      input("> Нажмите Enter, чтобы продолжить ")
+      menu=True
+
+
+
     elif choice == "2": # 2. Поиск по фамилии
       pass
     elif choice == "3": # 3. Поиск по номеру
