@@ -41,8 +41,8 @@ def findInBook(where, what):
     findedEntryOut = []
     for i in bookInMemory: 
         if what in i[where]:
-            findedEntryOut=[i]
-    return findedEntryOut
+            findedEntryOut.append(i)
+    return findedEntryOut  
 
 
         
@@ -116,6 +116,7 @@ while menu:
         if fentry==[]:
           print("# Записей не найдено!")
           input("> Нажмите Enter, чтобы продолжить ")
+          clear()
           menu=True
         else:
           print_data(fentry)        
@@ -127,6 +128,7 @@ while menu:
         if fentry==[]:
           print("# Записей не найдено!")
           input("> Нажмите Enter, чтобы продолжить ")
+          clear()
           menu=True
         else:
           print_data(fentry)        
