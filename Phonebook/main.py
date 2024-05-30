@@ -1,4 +1,5 @@
 import os
+import os.path
 
 menu = True
 
@@ -67,6 +68,7 @@ bookInMemory=read_txt(phonebookName)
 # print(read_txt("phon1.txt"))
 
 # print(read_txt("phon.txt"))
+clear()
 
 while menu:
     draw()
@@ -78,7 +80,7 @@ while menu:
     print("│ 1. Открыть справочник   │")
     print("│ 2. Поиск по справочнику │")
     print("│ 3. Добавление записей   │")
-    print("│ 4. Сохранить и выйти    │")
+    print("│ 4. Сохранить            │")
     print("│ 5. Выбор справочника    │")
     print("│ 6. Копировать справочник│")
     print("│ 0. Выйти без сохранения │")
@@ -180,11 +182,20 @@ while menu:
       else:
          menu=True
       
-    elif choice == "4": # 4. Сохранить и выйти
+    elif choice == "4": # 4. Сохранить
       write_txt(phonebookName,bookInMemory)
 
+
     elif choice == "5": # 5. Выбор справочника 
-      pass
+      menu = False
+      phonebookName=input("Введите название книги ")+".txt"
+      if os.path.exists(phonebookName):
+        bookInMemory=read_txt(phonebookName)
+      else:
+        print("#Такого файла не существует ")
+        input("> Нажмите Enter, чтобы продолжить ")
+        phonebookName="phon.txt" 
+      menu = True
 
     elif choice == "6": # 6. Копировать справочник
       pass
@@ -195,7 +206,7 @@ while menu:
       print("# Вы уверены, что хотите выйти без сохранения?(Введите Да если уверены)")
       print()
       print("! " * 10)
-      print("# ВНИМАНИЕ! ВСЕ ВНЕСЁННЫЕ В СПРАВОЧНИК ИЗМЕНЕНИЯ БУДУТ ОТМЕННЕНЫ!")
+      # print("# ВНИМАНИЕ! ВСЕ ВНЕСЁННЫЕ В СПРАВОЧНИК ИЗМЕНЕНИЯ БУДУТ ОТМЕННЕНЫ!")
       print("! " * 10)
       draw()
       choice2=input("> ")
