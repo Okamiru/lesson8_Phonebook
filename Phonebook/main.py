@@ -167,7 +167,7 @@ while menu:
         d = input("> Введите короткое описание: ")
         draw()
         print(f"Будет добавлена следующая запись: 'Фамилия': {f}, 'Имя': {n}, 'Телефон': {p}, 'Описание': {d})")
-        choice5 = input("# Если запись вас устраивает нажмите 1 ")
+        choice5 = input("# Если запись вас устраивает нажмите 1: ")
         draw()
         if choice5 == '1':
           newEntry(bookInMemory,f,n,p,d)
@@ -188,7 +188,7 @@ while menu:
 
     elif choice == "5": # 5. Выбор справочника 
       menu = False
-      phonebookName=input("Введите название книги ")+".txt"
+      phonebookName=input("Введите название книги: ") + ".txt"
       if os.path.exists(phonebookName):
         bookInMemory=read_txt(phonebookName)
       else:
@@ -198,7 +198,53 @@ while menu:
       menu = True
 
     elif choice == "6": # 6. Копировать справочник
-      pass
+      menu=False
+      draw()
+      print("# Вы в режиме копирования справочника:")
+      print("# Можно копировать как весь справочник, так и конкретную строку")
+      print("# Вам необходимо будет выбрать режим копирования, и имя справочника в который будет производиться копирование")
+      print("# Если справочника с укзанным вами именем не существует, будет создан новый справочник")
+      draw()
+      print("# Режмим 1: Копирование всего справочника. ВНИМАНИЕ: Справочник будет перезаписан")
+      print("# Режмим 2: Копирование строки.")
+      choice6 = input("> Выберите режим 1 или 2: ")
+      if choice6 == "1":
+        copyBook = input("# Введите имя справочника ") + ".txt"
+        write_txt(copyBook,bookInMemory)
+        print(f"Копирование выполнено в справочник {copyBook} ")
+        input("> Нажмите Enter, чтобы продолжить ")
+        clear()
+        menu = True
+      elif choice6 == "2":
+        clear()
+        copyBook = input("# Введите имя справочника: ") + ".txt"
+        draw()
+        print_data(bookInMemory)
+        draw()
+        while True:
+          strNum = int(input("# Введите номер строки для копирования: "))
+          try:
+            num = int(strNum)
+            break 
+          except ValueError:
+            print("Ошибка. Допускаются только целые числа")
+
+        if os.path.exists(copyBook):
+          secondBookInMemory=read_txt(copyBook)
+          strNum -= 1 #Так как пользователь вводит номер не с 0 нужно отнять 1 чтобы выбирать верный индекс
+          newEntry(secondBookInMemory,bookInMemory[strNum]['Фамилия'],bookInMemory[strNum]['Имя'],bookInMemory[strNum]['Телефон'],bookInMemory[strNum]['Описание'])
+          write_txt(copyBook,secondBookInMemory)
+          print(f"#Строка {strNum} скопирована, и помещена в файл {copyBook} ")
+          input("> Нажмите Enter, чтобы продолжить ")
+          menu=True
+        else:  
+          secondBookInMemory=[]
+          secondBookInMemory=[bookInMemory[0]]
+          write_txt(copyBook,secondBookInMemory)
+          print(f"#Строка {strNum+1} скопирована, и помещена в файл {copyBook} ")
+          input("> Нажмите Enter, чтобы продолжить ")
+          menu=True
+
     elif choice == "0": # 0. Выйти без сохранения 
       clear()
       menu=False
@@ -207,10 +253,9 @@ while menu:
       print()
       print("! " * 10)
       # print("# ВНИМАНИЕ! ВСЕ ВНЕСЁННЫЕ В СПРАВОЧНИК ИЗМЕНЕНИЯ БУДУТ ОТМЕННЕНЫ!")
-      print("! " * 10)
       draw()
       choice2=input("> ")
-      if choice2=="Да":
+      if choice2=="Да" or choice2=="1":
         clear()
         quit()
       else:
