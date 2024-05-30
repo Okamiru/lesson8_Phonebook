@@ -24,6 +24,15 @@ def read_txt(filename):
     except FileNotFoundError:
         return (f"Ошибка: Файл '{filename}' не найден.")
     
+# Функция для записи в файл   
+def write_txt(filename , phone_book):
+    with open(filename,'w',encoding='utf-8') as phout:
+        for i in range(len(phone_book)):
+            s=''
+            for v in phone_book[i].values():
+                s = s + v + ','
+            phout.write(f'{s[:-1]}')  
+    
 # Функция для вывода красивого справочника
 def print_data(book):
     headers = ["№".ljust(3, ' '), "Фамилия".ljust(10, ' '), "Имя".ljust(10, ' '), "Телефон".ljust(13, ' '), "Описание".ljust(63, ' ')]
@@ -44,6 +53,11 @@ def findInBook(where, what):
             findedEntryOut.append(i)
     return findedEntryOut  
 
+# Функция добавления новой записи
+def newEntry(book,f,n,p,d):
+    add = {'Фамилия': f, 'Имя': n, 'Телефон': p, 'Описание': d}
+    book.append(add)
+
 
         
 # Стандартно при запуске считываем наш справочник phon.txt в bookInMemory. Далее работаем с bookInMemory
@@ -63,10 +77,10 @@ while menu:
     print("├─────────────────────────┤")
     print("│ 1. Открыть справочник   │")
     print("│ 2. Поиск по справочнику │")
-    print("│ 4. Добавление записей   │")
-    print("│ 5. Сохранить и выйти    │")
-    print("│ 6. Выбор справочника    │")
-    print("│ 7. Копировать справочник│")
+    print("│ 3. Добавление записей   │")
+    print("│ 4. Сохранить и выйти    │")
+    print("│ 5. Выбор справочника    │")
+    print("│ 6. Копировать справочник│")
     print("│ 0. Выйти без сохранения │")
     print("└─────────────────────────┘")
     draw()
@@ -138,13 +152,41 @@ while menu:
 
 
 
-    elif choice == "4": # 4. Добавление записей
+    elif choice == "3": # 3. Добавление записей
+      menu=False
+      clear()
+      draw()
+      print("")
+      choice4 = input("# Режмм добавления новой записи. Введите 1 чтобы продолжить, или 0, чтобы вернуться в основное меню ")
+      if choice4 == "1":
+        f = input("> Введите фамилию: ")
+        n = input("> Введите имя: ")
+        p = input("> Введите номер телефона: ")
+        d = input("> Введите короткое описание: ")
+        draw()
+        print(f"Будет добавлена следующая запись: 'Фамилия': {f}, 'Имя': {n}, 'Телефон': {p}, 'Описание': {d})")
+        choice5 = input("# Если запись вас устраивает нажмите 1 ")
+        draw()
+        if choice5 == '1':
+          newEntry(bookInMemory,f,n,p,d)
+          print("# Запись добавлена!")
+          input("> Нажмите Enter, чтобы продолжить ")
+          clear()
+          menu=True
+        else:
+          clear()
+          menu=True
+        
+      else:
+         menu=True
+      
+    elif choice == "4": # 4. Сохранить и выйти
+      write_txt(phonebookName,bookInMemory)
+
+    elif choice == "5": # 5. Выбор справочника 
       pass
-    elif choice == "5": # 5. Сохранить и выйти
-      pass
-    elif choice == "6": # 6. Выбор справочника 
-      pass
-    elif choice == "7": # 7. Копировать справочник
+
+    elif choice == "6": # 6. Копировать справочник
       pass
     elif choice == "0": # 0. Выйти без сохранения 
       clear()
